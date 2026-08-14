@@ -30,7 +30,7 @@ interface State{
     subscribe(callback:()=>any):void
 }
 
-const API_BASE_URL="http://localhost:3001" 
+const API_BASE_URL="https://chat-backend-4wx7.onrender.com" 
 
 
  const state:State={
