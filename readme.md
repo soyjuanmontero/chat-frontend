@@ -72,4 +72,4 @@ pnpm dev
 
 📡 Backend Relacionado
 Este proyecto se conecta con el Backend desarrollado en Node.js, Express y TypeScript:
-👉 Repositorio del Backend (chat-backend)
+👉 Repositorio del Backend (https://github.com/soyjuanmontero/chat-backend)
