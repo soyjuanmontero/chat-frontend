@@ -33,6 +33,7 @@ interface State{
 const API_BASE_URL="https://chat-backend-4wx7.onrender.com" 
 
 
+
  const state:State={
   data: sessionStorage.getItem('user') 
     ? { user: JSON.parse(sessionStorage.getItem('user')!) }
@@ -97,7 +98,7 @@ catch(error ){
     },
 
 
-     messageRef : ref(db, 'chatRoom/messages'),
+     messageRef : ref(db, 'general'),
 
     listenToMessages(){
 
@@ -119,23 +120,73 @@ this.setState({
 
     },
 
-    sendMessage(message){
+//     sendMessage(message){
         
 
-// Envía el mensaje directamente generando una clave única
-const newState=this.getState()
+// // Envía el mensaje directamente generando una clave única
+// const newState=this.getState()
 
-  if (!newState.user) {
+//   if (!newState.user) {
+//         console.error("No hay usuario logueado");
+//         return; 
+//     }
+
+//     push(this.messageRef, {
+//         message: message,
+//         userId: newState.user.userId,
+//         userName: newState.user.userName
+//     });
+    
+
+//     },
+ async  sendMessage(message){
+    const newState=this.getState()
+      if (!newState.user) {
         console.error("No hay usuario logueado");
         return; 
     }
-
-    push(this.messageRef, {
-        message: message,
+   
+        
+       try{
+      const response= await fetch(API_BASE_URL+'/chats/general',{
+            method:'POST',
+             headers: {
+        'Content-Type': 'application/json'
+             },
+              body: JSON.stringify({
+       
+          message: message,
         userId: newState.user.userId,
         userName: newState.user.userName
-    });
+    })
+        })
+  
+    if (!response.ok) {
+        throw new Error(`Error del servidor: Código ${response.status}`);
+    }
     
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        throw new TypeError("El servidor no devolvió JSON, devolvió HTML u otro formato.");
+    }
+
+    
+    const data= await response.json()
+   
+    
+   
+    
+
+
+}
+catch(error ){
+
+    console.error("Hubo un fallo en la petición:", error);
+}
+   
+
+  
+
 
     },
        subscribe(callback:()=>{}){
