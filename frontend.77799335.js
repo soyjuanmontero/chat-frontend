@@ -121,7 +121,7 @@ let e,t,n,i,r,s,o,a,l,h,c,u,d,p,f,_,m,g,y;var v,w,C,b,I,T,E,S,k,x=globalThis;let
       <form-el id="form" textLabel="Escribe tu nombre" textButton="Comenzar"></form-el>
     
     </div>
-    `;let i=t.querySelector("form-el");return i&&i.addEventListener("sendInfo",async t=>{let n=t.detail.info.trim();if(""===n)return void alert("Por favor, ingresa un nombre válido para continuar.");let i=await or.sendData();if(i){if(!i.user?.userId)return;or.setState({user:{userName:n,userId:i.user?.userId}});let t=or.getState();sessionStorage.setItem("user",JSON.stringify(t.user)),console.log(t.user),e.goTo("/step-1")}else alert("Hubo un error al conectar con el servidor")}),t.appendChild(n),t}},{path:/\/step-1/,render:function(e){or.subscribe(()=>{var e;let t;console.log("subscribe"),e=r,console.log(t=or.getState()),e.innerHTML="",t.messages?.forEach(n=>{let i=document.createElement("chat-el");t.user?.userId===n.userId?i.setAttribute("typeMessage","sent"):(i.setAttribute("typeMessage","received"),i.setAttribute("userName",n.userName)),i.setAttribute("text",n.message),e&&e.appendChild(i)})});let t=document.createElement("div"),n=document.createElement("style");n.innerHTML=`
+    `;let i=t.querySelector("form-el");return i&&i.addEventListener("sendInfo",async t=>{let n=t.detail.info.trim();if(""===n)return void alert("Por favor, ingresa un nombre válido para continuar.");let i=await or.sendData();if(i){if(!i.user?.userId)return;or.setState({user:{userName:n,userId:i.user?.userId}});let t=or.getState();sessionStorage.setItem("user",JSON.stringify(t.user)),console.log(t.user),e.goTo("/step-1")}else alert("Hubo un error al conectar con el servidor")}),t.appendChild(n),t}},{path:/\/step-1/,render:function(e){or.subscribe(()=>{var e;let t;e=r,t=or.getState(),e.innerHTML="",t.messages?.forEach(n=>{let i=document.createElement("chat-el");t.user?.userId===n.userId?i.setAttribute("typeMessage","sent"):(i.setAttribute("typeMessage","received"),i.setAttribute("userName",n.userName)),i.setAttribute("text",n.message),e&&e.appendChild(i)})});let t=document.createElement("div"),n=document.createElement("style");n.innerHTML=`
     .container{
     margin :0 31px 72px;
     }
@@ -151,4 +151,4 @@ let e,t,n,i,r,s,o,a,l,h,c,u,d,p,f,_,m,g,y;var v,w,C,b,I,T,E,S,k,x=globalThis;let
     
     </div>
     `;let i=t.querySelector("#form"),r=t.querySelector(".container-messages");return i?.addEventListener("sendInfo",e=>{let t=e.detail.info;""!==t.trim()&&or.sendMessage(t)}),t.appendChild(n),or.listenToMessages(),t}}];P(),R(),N(),(g=document.querySelector(".app"))&&function(e){function t(e){history.pushState({},"",e),n(e),"/step-1"===e&&history.pushState({},"",e)}function n(n){for(let i of os)if(i.path.test(n)){let n=i.render({goTo:t});e.innerHTML="",e.appendChild(n)}}addEventListener("popstate",e=>{n(location.pathname)}),n(location.pathname)}(g);
-//# sourceMappingURL=frontend.22cc9ab0.js.map
+//# sourceMappingURL=frontend.77799335.js.map
