@@ -6,13 +6,13 @@ interface Params {
 
 export function initPageStep1(params:Params){
     state.subscribe(()=>{
-        console.log('subscribe')
+        
         renderMessages(containerMessages)
     })
     
     function renderMessages(element:Element){
         const currentState=state.getState()
-        console.log(currentState)
+        
         element.innerHTML=''
     currentState.messages?.forEach(e => {
         const newChatEl=document.createElement("chat-el")

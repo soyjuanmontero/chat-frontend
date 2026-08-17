@@ -120,25 +120,7 @@ this.setState({
 
     },
 
-//     sendMessage(message){
-        
 
-// // Envía el mensaje directamente generando una clave única
-// const newState=this.getState()
-
-//   if (!newState.user) {
-//         console.error("No hay usuario logueado");
-//         return; 
-//     }
-
-//     push(this.messageRef, {
-//         message: message,
-//         userId: newState.user.userId,
-//         userName: newState.user.userName
-//     });
-    
-
-//     },
  async  sendMessage(message){
     const newState=this.getState()
       if (!newState.user) {
