@@ -70,7 +70,7 @@ export function initPageWelcome(params:Params){
       const currentState=state.getState()
       
       sessionStorage.setItem('user', JSON.stringify(currentState.user));
-      console.log(currentState.user)
+      
 
         params.goTo("/step-1")
        } 
