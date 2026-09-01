@@ -1,6 +1,7 @@
 import { initPageStep1 } from "./pages/step-1";
 import { initPageWelcome } from "./pages/welcome";
 
+import { initPageLogin } from "./pages/signup";
 interface Params {
     goTo: Function
 }
@@ -19,6 +20,10 @@ const routes:Routes[]=[
         path: /\/step-1/,
         render:initPageStep1
 
+    },
+    {
+        path:/\/sign-up/,
+        render:initPageLogin
     }
 
 

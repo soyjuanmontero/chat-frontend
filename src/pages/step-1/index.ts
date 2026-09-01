@@ -11,10 +11,13 @@ export function initPageStep1(params:Params){
     })
     
     function renderMessages(element:Element){
-        const currentState=state.getState()
+       
         
+        const currentState=state.getState()
+       
         element.innerHTML=''
     currentState.messages?.forEach(e => {
+      
         const newChatEl=document.createElement("chat-el")
         
         
@@ -37,11 +40,27 @@ export function initPageStep1(params:Params){
     
     
           element.appendChild(newChatEl )
+          requestAnimationFrame(() => {
+        containerMessages.scrollTop = containerMessages.scrollHeight;
+    });
       }
     });
         
     }    
    
+     function captureData(element:HTMLFormElement){
+
+   if(element){
+      element.addEventListener('sendInfo',async (e:any)=>{
+        
+        
+        form= e.detail
+       
+        
+      })
+    }
+
+ }
     
     
 
@@ -52,6 +71,7 @@ export function initPageStep1(params:Params){
 
      const  divEl=document.createElement('div')
       const styleEl=document.createElement('style')
+      let roomId=state.getState().room?.roomId
 
      
         styleEl.innerHTML=`
@@ -60,13 +80,21 @@ export function initPageStep1(params:Params){
     }
     .title{
     margin:16px 0 26px;
+    font-size:52px;
+    font-weight:700
     }
+    .room-id{
+    margin:0;
+    font-size:24px
+    font-weight:500}
+
     .container-messages{
     height:60vh;
-    overflow-y: scroll;
+    overflow-y: auto;
     display:flex;
     flex-direction: column;
-    justify-content: flex-end;
+    gap: 12px; 
+    padding: 10px;
 
     }
     `
@@ -76,40 +104,58 @@ export function initPageStep1(params:Params){
     
     <header-el></header-el>
     <div class="container">
+    <div class="title-container">
     <h1 class='title'>Chat</h1>
+    
+    <p class="room-id" >Room id:${roomId}</p>
+    </div>
     <div class='container-messages'>
         
      
     </div>
 
-    <form-el id="form" textButton="Enviar"></form-el>
-
+    <form class="welcome-form">
+     <text-field  nameInput="message" typeInput="text"></text-field>
+        <div>
+            <button-el  textButton="Enviar"classButton="button-primary"></button-el>
+        </div>
+    </form>
     
     </div>
     `
-        const form=divEl.querySelector('#form')    
+        
         const containerMessages=divEl.querySelector('.container-messages') as Element
-        form?.addEventListener('sendInfo',(e:any)=>{
         
-        const message=e.detail.info
-        
-        const  verifiedMessage=message.trim(
-        )
-        
-        if(verifiedMessage===""){
-            
-            
-            return
-        }
-        
-        
- state.sendMessage(message)
+        const formEl=divEl.querySelector('.welcome-form') as HTMLFormElement
+        const textFieldEl=divEl.querySelector("tex-field")
+      
+        let form:any={}
+       
+        captureData(formEl)
+
+   formEl.addEventListener("submit",async (e:any)=>{
+    e.preventDefault()
+    const {message}=form
     
-        
-    })
+    const res= await state.sendMessage(message)
+    if(textFieldEl){
+        (textFieldEl as any).clearInput()
+    }
+   
+    formEl.reset()
+   
+
+
+   })
           divEl.appendChild(styleEl)
-          
-       state.listenToMessages()
+          const currenState=state.getState()
+        
+          if(currenState.room?.rtdbRoomId)
+          {
+       
+
+              state.listenToMessages(currenState.room.rtdbRoomId)
+          }
 
 return divEl
 

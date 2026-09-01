@@ -1,15 +1,16 @@
 import { initComponentChat } from './components/chat'
-import {initComponentForm} from './components/form'
+import {initComponentTextField} from './components/texfield'
 import { initComponentHeader } from './components/header'
-import {initPageWelcome} from './pages/welcome'
+import { initComponentButton } from './components/button'
+
 
 import { initRouter } from './router';
-import { ref, onValue } from "firebase/database"
-import { db } from "./db"
 
-initComponentForm();
+
+initComponentTextField();
 initComponentHeader();
 initComponentChat();
+initComponentButton()
 
 
 

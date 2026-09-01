@@ -4,24 +4,13 @@ interface Params {
     goTo: Function
 }
 
-export function initPageWelcome(params:Params){
+export function initPageLogin(params:Params){
 
- function captureData(element:HTMLFormElement){
+     function captureData(element:HTMLFormElement){
 
    if(element){
       element.addEventListener('sendInfo',async (e:any)=>{
-        if(e.detail.room==='exist'){
-          
-          roomEl?.classList.remove('invisible')
-        }
-        if(e.detail.room==='new'){
-          roomEl?.classList.add('invisible')
-              if (roomEl) {
-         (roomEl as any ).clearInput();
-      }
-          
-          delete form.roomId
-        }
+        
         
         form= {
           ...form,
@@ -32,33 +21,52 @@ export function initPageWelcome(params:Params){
     }
 
  }
-  function showMessage(res:any,element:Element){
+        function executeWithADelay() {
+            
+            setTimeout(() => {
+      params.goTo("/welcome")
+
+  }, 1000);
+}
+       function showMessage(res:any,element:Element){
 
         
       
 
+element.innerHTML=res.message
+
             if(!res.success){
-            
+                
                 element.classList.add("error")
-                  element?.classList.remove('invisible')
+                element?.classList.remove('invisible')
+             
             }
             else{
+               
                 if(element.classList.contains("error")){
                     element.classList.remove("error")
                     
                 }
-                
+                    element?.classList.remove('invisible')
+                    executeWithADelay()
             }
-          
-            element.innerHTML=`${res.message}`
+            
+            
+       
 
         
         }
  
 
 
+
+  
+
+
     const divEl=document.createElement('div')
     const styleEl=document.createElement('style')
+    
+    
     styleEl.innerHTML=`
     .container{
     margin :0 31px 72px;
@@ -70,7 +78,7 @@ export function initPageWelcome(params:Params){
     .invisible{
     display:none;
     }
-      .container-boton-signup{
+     .container-boton-signup{
      font-size: 15px;
         color: #666;
     margin-top:70px;
@@ -90,7 +98,7 @@ export function initPageWelcome(params:Params){
         .card-form:hover {
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     }
-           .success-message {
+        .success-message {
         background-color: #d4edda;
         color: #155724;
         border: 1px solid #c3e6cb;
@@ -112,100 +120,58 @@ export function initPageWelcome(params:Params){
     <header-el></header-el>
     <div class="container">
     <h1 class='title'>Bienvenidos</h1>
+    <p>
     <div class="card-form">
     <div class="success-message invisible"> "¡Usuario creado con éxito! Redirigiendo..."</div>
     <form class="welcome-form">
     <text-field textLabel="Email" nameInput="email" typeInput="email"></text-field>
+    <text-field textLabel="Tu nombre" nameInput="userName" typeInput="text"></text-field>
+   
+    <button-el class="buttonForm" textButton="Crear usuario" classButton="button-signup"></button-el>
     
-    <text-field textLabel="Room" nameInput="room" tag="select"></text-field>
-     <text-field id="room" textLabel="Room id" nameInput="roomId" class="invisible" ></text-field>
-    <button-el class="buttonForm" textButton="Iniciar sesion" classButton="button-primary"></button-el>
     </form>
-  </div>
-      <div class=container-boton-signup>
-       <p>no tienes una cuenta?</p>
-<button-el class="buttonSignup" textButton="Crear usuario "classButton="button-signup"></button-el>
     </div>
+
+    
+      <div class=container-boton-signup>
+      <p>¿Ya tienes una cuenta?</p>
+<button-el class="buttonSignup" textButton=" iniciar sesion"classButton="button-primary"></button-el>
+    </div>
+  
     </div>
     `
   
     const formEl=divEl.querySelector('.welcome-form') as HTMLFormElement
-   
-    const buttonsignupEl=divEl.querySelector(".buttonSignup")
-    const roomEl=divEl.querySelector('#room')
-    const messageEl=divEl.querySelector(".success-message")
+    const buttonSignupEl=divEl.querySelector('.buttonSignup')
+    
+    const resMessageEl=divEl.querySelector('.success-message')
     let form:any={}
     
-   captureData(formEl)
+  captureData(formEl)
     if(formEl){
        formEl.addEventListener("submit",async (e)=>{
+        
         e.preventDefault()
-       const {email,room,roomId}=form
-   
-        state.setState({
-          ...state.getState(),
-          user:{
-            email,
+        const {email, userName}=form
+        const res= await state.signup(email,userName)
+
+        if(resMessageEl){
             
-           
-          },
-          room:{
-            room,
-            roomId
-           
-          }
-        })
-       
-       
-     const resAuth= await state.auth()
-         if (messageEl){
 
+            showMessage(res,resMessageEl)
 
-
-       
-      
-  let resRoom
-      if(resAuth.success){
-        
-          if(room==="new"){
-          
-
-       resRoom= await state.createRoom()
-       
-      
-          }else{
-
-            resRoom= await state.getRoomExistId()
-
-          }
-          
-          if(resRoom.success && messageEl){
-          
-
-          const currenState=state.getState()
-    sessionStorage.setItem('state', JSON.stringify(currenState));
-            params.goTo("/step-1")     
-          }else{
-            showMessage(resRoom,messageEl)
-            
-          }
         }
-        else{
-          
-          showMessage(resAuth,messageEl)
-        }
-
-      }
-   
-        
-       
       })
     }
-    if(buttonsignupEl){
-      buttonsignupEl.addEventListener("click",(e)=>{
-        params.goTo("/sign-up")
-      })
-    }
+if(buttonSignupEl){
+
+    buttonSignupEl.addEventListener("click", (e)=>{
+        console.log(e)
+        params.goTo("/welcome")
+    })
+}
+
+
 
     divEl.appendChild(styleEl)
 
