@@ -44,6 +44,7 @@ interface State{
 }
 
 const API_BASE_URL="https://chat-backend-4wx7.onrender.com"  
+// const API_BASE_URL="http://localhost:3000" 
 
 
 
@@ -99,10 +100,13 @@ this.setState({
  async  sendMessage(message){
      const newState=this.getState()
      const id=newState.room?.rtdbRoomId
-     const messageRef = ref(db, 'room/'+id)
+     
       if (!newState.user) {
         console.error("No hay usuario logueado");
         return; 
+    }
+    if(!message){
+        return
     }
    
         

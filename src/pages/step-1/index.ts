@@ -14,9 +14,20 @@ export function initPageStep1(params:Params){
        
         
         const currentState=state.getState()
+        
+        if(!currentState.messages){
+            return
+        }
+        const reversed = currentState.messages.toReversed();
+         
+
+
        
         element.innerHTML=''
-    currentState.messages?.forEach(e => {
+      
+        
+    reversed.forEach(e => {
+       
       
         const newChatEl=document.createElement("chat-el")
         
@@ -59,6 +70,7 @@ export function initPageStep1(params:Params){
         
       })
     }
+    
 
  }
     
@@ -76,50 +88,66 @@ export function initPageStep1(params:Params){
      
         styleEl.innerHTML=`
     .container{
-    margin :0 31px 72px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    }
+    .container_title-messages{
+        padding :16px 0 0 28px;
+  
     }
     .title{
-    margin:16px 0 26px;
-    font-size:52px;
+        margin:0;
+        
+        font-size:52px;
     font-weight:700
     }
     .room-id{
     margin:0;
     font-size:24px
-    font-weight:500}
+    font-weight:500;}
 
     .container-messages{
-    height:60vh;
-    overflow-y: auto;
+        overflow-y: auto;
+        flex:1;
+       
+    
     display:flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 12px; 
     padding: 10px;
 
     }
+    .welcome-form{
+    margin:0 28px;}
+    .vacio{
+    flex:1;}
+   
     `
    
 
     divEl.innerHTML=`
     
-    <header-el></header-el>
-    <div class="container">
-    <div class="title-container">
-    <h1 class='title'>Chat</h1>
+    <div  class="container">
+            <header-el></header-el>
+        <div class="container_title-messages">
+           
+                 <h1 class='title'>Chat</h1>
     
-    <p class="room-id" >Room id:${roomId}</p>
-    </div>
-    <div class='container-messages'>
-        
+                <p class="room-id" >Room id:${roomId}</p>
+         </div>
+             <div class='container-messages'>
+            <div class="vacio"></div>
      
-    </div>
+            </div>
 
-    <form class="welcome-form">
-     <text-field  nameInput="message" typeInput="text"></text-field>
-        <div>
-            <button-el  textButton="Enviar"classButton="button-primary"></button-el>
+            <form class="welcome-form">
+                 <text-field  nameInput="message" typeInput="text"></text-field>
+                 <div>
+                 <button-el  textButton="Enviar"classButton="button-primary"></button-el>
+                </div>
+            </form>
         </div>
-    </form>
     
     </div>
     `
@@ -135,9 +163,10 @@ export function initPageStep1(params:Params){
 
    formEl.addEventListener("submit",async (e:any)=>{
     e.preventDefault()
-    const {message}=form
+    let {message}=form
     
     const res= await state.sendMessage(message)
+    form.message=""
     if(textFieldEl){
         (textFieldEl as any).clearInput()
     }
@@ -148,13 +177,13 @@ export function initPageStep1(params:Params){
 
    })
           divEl.appendChild(styleEl)
-          const currenState=state.getState()
+          const currentState=state.getState()
         
-          if(currenState.room?.rtdbRoomId)
+          if(currentState.room?.rtdbRoomId)
           {
        
 
-              state.listenToMessages(currenState.room.rtdbRoomId)
+              state.listenToMessages(currentState.room.rtdbRoomId)
           }
 
 return divEl
