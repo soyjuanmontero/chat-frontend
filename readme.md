@@ -1,6 +1,6 @@
 # 💬 Chat App - Frontend
 
-👉 **[Probar aplicación en vivo](https://soyjuanmontero.github.io/chat-frontend/)**
+👉 **[Probar aplicación en vivo](https://chatroom-monorepo.onrender.com)**
 
 Aplicación de chat en tiempo real construida utilizando **TypeScript nativo**, **Web Components (Shadow DOM)** y una arquitectura de **Single Page Application (SPA)** sin frameworks externos. El cliente maneja persistencia de sesión local y sincronización de mensajes mediante **Firebase Realtime Database** y una API REST alojada en Render.
 
